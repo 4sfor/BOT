@@ -3,7 +3,7 @@ from create_bot import dp
 from data_base import sqlite_db
 
 
-
+#функция для запуска бота, при удачном запуске в консоль выводится сообщение, что бот работает
 async def on_startup(_):
     print("Бот работает")
     sqlite_db.sql_start()
