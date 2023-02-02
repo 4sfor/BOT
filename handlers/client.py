@@ -23,7 +23,7 @@ class FSMAdmin(StatesGroup):
     time_book= State()
     name_client_book=State()
 
-
+global user_id
 # открывает пользовательскую клавиатуру
 async def send_start(message: types.Message):
     await message.answer(bot_text.start_message_user, reply_markup=kb_client)
@@ -46,7 +46,6 @@ async def cancel_handler_client(message: types.Message, state: FSMContext):
 
 # сохраняет id пользователя, запрашивает имя
 async def add_client_id(message: types.Message, state: FSMContext):
-    global user_id
     user_id = message.from_user.id
     async with state.proxy() as data:
         data["user_id"] = user_id
@@ -122,7 +121,7 @@ async def save_data_client(message: types.Message, state: FSMContext):
 
 async def room_list_foruser(message: types.Message):
     await sqlite_db.sql_read(message)
-
+###########для бронирования НЕ РАБОТАЕТ################
 @dp.message_handler(commands="Забронировать_помещение", state=None)
 async def book_room(message: types.Message):
     await sqlite_db.sql_read(message)
@@ -149,8 +148,14 @@ async def time_book(message: types.Message, state: FSMContext):
         data["time_event"]=message.text
     await FSMAdmin.next()
 
+
 @dp.message_handler(state=FSMAdmin.name_client_book)
-async def name_client_book(message: types.Message, state:FSMContext):
+async def copy_client_book(message: types.Message, state:FSMContext):
+    user_id=message.from_user.id
+    await sqlite_db.sql_book_copy_lient(user_id)
+    await message.reply("Помещение забронировано")
+    await state.finish()
+
 
 
 

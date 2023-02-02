@@ -183,7 +183,7 @@ async def delete_item(message: types.Message):
 async def sql_delete_room(message: types.Message):
     name_room = message.text
     sqlite_db.sql_delete_room(name_room)
-    answer_message = "deleted"
+    answer_message = "удалено"
     await message.answer(answer_message)
 
 
@@ -254,8 +254,10 @@ async def add_time_event(message: types.Message, state: FSMContext):
 
 async def event_list(message: types.Message):
     await sqlite_db.sql_list_event(message)
-
-
+###########для бронирования НЕ РАБОТАЕТ################
+@dp.message_handler(commands="Бронь")
+async def book_list(message: types.Message):
+    await sqlite_db.book_list(message)
 # регистрация хендлеров
 def register_handlers_admin(dp: Dispatcher):
     dp.register_message_handler(admin, commands=[bot_text.start_moderator])
