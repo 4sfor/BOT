@@ -1,2 +1,2 @@
 # BOT
-Telegram Bot by pothon, aiogramm, SQLite3
+Telegram Bot by python, aiogramm, SQLite3
